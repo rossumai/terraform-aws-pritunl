@@ -3,7 +3,7 @@ data "aws_ami" "oracle" {
 
   filter {
     name   = "name"
-    values = ["OL8.3-x86_64-HVM-2020-12-10"]
+    values = ["OL8.4-x86_64-HVM-2021-05-28"]
   }
 
   filter {
