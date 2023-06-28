@@ -109,4 +109,16 @@ cat <<EOF > /etc/logrotate.d/pritunl
 }
 EOF
 
+cat <<EOF > /etc/pritunl.conf
+{
+    "debug": false,
+    "bind_addr": "0.0.0.0",
+    "port": 443,
+    "log_path": "/var/log/pritunl.log",
+    "temp_path": "/tmp/pritunl_%r",
+    "local_address_interface": "auto",
+    "mongodb_uri": "mongodb://localhost:27017/pritunl"
+}
+EOF
+
 reboot
