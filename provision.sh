@@ -77,7 +77,7 @@ rpm -i https://s3.amazonaws.com/ec2-downloads-windows/SSMAgent/latest/linux_amd6
 gpg --keyserver hkp://keyserver.ubuntu.com --recv-keys 7568D9BB55FF9E5287D586017AE645C0CF8E292A
 gpg --armor --export 7568D9BB55FF9E5287D586017AE645C0CF8E292A > key.tmp; rpm --import key.tmp; rm -f key.tmp
 yum -y install pritunl mongodb-org wireguard-tools
-python3 -m pip install 'mongo[srv]' dnspython
+python3 -m pip install mongo dnspython
 
 # systemctl start mongod pritunl
 
