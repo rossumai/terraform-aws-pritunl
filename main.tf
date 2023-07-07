@@ -24,6 +24,7 @@ resource "aws_instance" "pritunl" {
     volume_size           = var.volume_size
     tags                  = merge(tomap({ "Name" = format("%s-%s", var.resource_name_prefix, "vpn") }), var.tags, )
     delete_on_termination = false # we want' to keep our old HD for VPN - better to remove it manually later
+    volume_type           = "gp3"
   }
 
   # When user-data changes I want to preserve instance as I can make changes on the machine or I can taint the resource if needed.

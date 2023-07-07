@@ -53,7 +53,7 @@ allow mongod_t cgroup_t:file { getattr open read };
 EOF
 checkmodule -M -m -o mongodb_cgroup_memory.mod mongodb_cgroup_memory.te
 semodule_package -o mongodb_cgroup_memory.pp -m mongodb_cgroup_memory.mod
-sudo semodule -i mongodb_cgroup_memory.pp
+semodule -i mongodb_cgroup_memory.pp
 
 cat > mongodb_proc_net.te <<EOF
 module mongodb_proc_net 1.0;
@@ -70,14 +70,14 @@ EOF
 
 checkmodule -M -m -o mongodb_proc_net.mod mongodb_proc_net.te
 semodule_package -o mongodb_proc_net.pp -m mongodb_proc_net.mod
-sudo semodule -i mongodb_proc_net.pp
+semodule -i mongodb_proc_net.pp
 
 yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
 rpm -i https://s3.amazonaws.com/ec2-downloads-windows/SSMAgent/latest/linux_amd64/amazon-ssm-agent.rpm
 gpg --keyserver hkp://keyserver.ubuntu.com --recv-keys 7568D9BB55FF9E5287D586017AE645C0CF8E292A
-gpg --armor --export 7568D9BB55FF9E5287D586017AE645C0CF8E292A > key.tmp; sudo rpm --import key.tmp; rm -f key.tmp
-sudo yum -y install pritunl mongodb-org wireguard-tools
-/usr/lib/pritunl/bin/python -m pip install 'mongo[srv]' dnspython
+gpg --armor --export 7568D9BB55FF9E5287D586017AE645C0CF8E292A > key.tmp; rpm --import key.tmp; rm -f key.tmp
+yum -y install pritunl mongodb-org wireguard-tools
+python3 -m pip install mongo dnspython
 
 # systemctl start mongod pritunl
 
@@ -106,6 +106,18 @@ cat <<EOF > /etc/logrotate.d/pritunl
   delaycompress
   copytruncate
   notifempty
+}
+EOF
+
+cat <<EOF > /etc/pritunl.conf
+{
+    "debug": false,
+    "bind_addr": "0.0.0.0",
+    "port": 443,
+    "log_path": "/var/log/pritunl.log",
+    "temp_path": "/tmp/pritunl_%r",
+    "local_address_interface": "auto",
+    "mongodb_uri": "mongodb://localhost:27017/pritunl"
 }
 EOF
 
